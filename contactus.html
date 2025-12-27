@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Contact Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <style>
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .form-floating > label {
+            left: 0.5rem;
+        }
+        .social-icon {
+            font-size: 1.5rem;
+            margin: 0 0.5rem;
+            color: #0d6efd;
+            transition: all 0.3s ease-in-out;
+        }
+        .social-icon:hover {
+            color: #0a58ca;
+            transform: scale(1.2);
+        }
+        #contactAnimation {
+            position: relative;
+            height: 50px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        .slide-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: top 0.5s ease-in-out;
+            top: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .slide-text.active {
+            top: 0;
+        }
+        .contact-heading {
+            position: relative;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        .contact-heading::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, #0d6efd, #00d4ff);
+            border-radius: 2px;
+            transition: width 0.3s ease-in-out;
+        }
+        .contact-heading:hover::before {
+            width: 120px;
+        }
+        .form-control:focus, .form-select:focus {
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .btn-primary {
+            transition: all 0.3s ease-in-out;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card {
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <section id="contact" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="contact-heading text-center mb-5">Contact Us</h2>
+            <div id="contactAnimation">
+                <div class="slide-text active">We'd love to hear from you!</div>
+                <div class="slide-text">Get in touch today!</div>
+                <div class="slide-text">Let's connect!</div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <form id="contactForm">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+                            <label for="name">Your Name</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+                            <label for="email">Your Email</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="subject" required>
+                                <option value="" selected disabled>Choose a subject</option>
+                                <option value="general">General Inquiry</option>
+                                <option value="support">Technical Support</option>
+                                <option value="billing">Billing Question</option>
+                            </select>
+                            <label for="subject">Subject</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control" id="message" style="height: 150px" placeholder="Your Message" required></textarea>
+                            <label for="message">Your Message</label>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Contact Information</h5>
+                            <p><i class="fas fa-map-marker-alt me-2"></i> 123 Main St, Vellore, India 12345</p>
+                            <p><i class="fas fa-phone me-2"></i> +1 (555) 123-4567</p>
+                            <p><i class="fas fa-envelope me-2"></i> info@example.com</p>
+                            <div class="mt-4">
+                                <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Contact form submission
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            console.log('Form submitted:', { name, email, subject, message });
+            
+            // Show a success message with confetti effect
+            showConfetti();
+            showToast('Thank you for your message! We will get back to you soon.');
+            contactForm.reset();
+        });
+
+        // Confetti effect
+        function showConfetti() {
+            const confettiCount = 200;
+            const confettiColors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '10px';
+                confetti.style.height = '10px';
+                confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.top = -10 + 'px';
+                confetti.style.zIndex = 1000;
+                document.body.appendChild(confetti);
+
+                const animation = confetti.animate(
+                    [
+                        { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                        { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+                    ],
+                    {
+                        duration: Math.random() * 3000 + 2000,
+                        easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+                    }
+                );
+
+                animation.onfinish = () => confetti.remove();
+            }
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast align-items-center text-white bg-primary border-0';
+            toast.setAttribute('role', 'alert');
+            toast.setAttribute('aria-live', 'assertive');
+            toast.setAttribute('aria-atomic', 'true');
+            toast.innerHTML = `
+                <div class="d-flex">
+                    <div class="toast-body">
+                        ${message}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            const bsToast = new bootstrap.Toast(toast);
+            bsToast.show();
+        }
+
+        // Animated contact text
+        const contactAnimation = document.getElementById('contactAnimation');
+        const slides = contactAnimation.getElementsByClassName('slide-text');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        setInterval(nextSlide, 2000);
+
+        // Interactive form labels
+        const formInputs = document.querySelectorAll('.form-floating input, .form-floating textarea, .form-floating select');
+        formInputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.labels[0].style.color = '#0d6efd';
+            });
+            input.addEventListener('blur', () => {
+                input.labels[0].style.color = '';
+            });
+        });
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

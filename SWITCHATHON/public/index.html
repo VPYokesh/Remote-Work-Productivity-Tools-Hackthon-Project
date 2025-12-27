@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Meeting Room with Whiteboard</title>
+    <style>
+    #meeting-room {
+        display: none;
+        flex-direction: row;
+        height: 100vh;
+    }
+    #video-area {
+        flex: 2;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 20px;
+        background-color: var(--bg-color);
+    }
+    #chat-area {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--sidebar-color);
+        max-width: 300px;
+        padding: 20px;
+    }
+    #chat-messages {
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+    #chat-messages div {
+        margin-bottom: 5px;
+    }
+    #chat-input {
+        display: flex;
+    }
+    #chat-input input {
+        flex: 1;
+        padding: 5px;
+        border: none;
+        border-radius: 5px 0 0 5px;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+    }
+    #chat-input button {
+        padding: 5px 10px;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        background-color: var(--button-color);
+        color: white;
+        cursor: pointer;
+    }
+    /* ... (rest of the styles) ... */
+
+        :root {
+            --bg-color: #36393f;
+            --sidebar-color: #2f3136;
+            --text-color: #dcddde;
+            --input-bg: #40444b;
+            --button-color: #7289da;
+        }
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+        #video-area {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        .video-container {
+            background-color: #202225;
+            aspect-ratio: 16 / 9;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--sidebar-color);
+            max-width: 340px;
+        }
+        #chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #chat-input {
+            display: flex;
+            padding: 20px;
+            background-color: var(--bg-color);
+        }
+        #chat-input input {
+            flex: 1;
+            margin-right: 10px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+        }
+        #chat-input button, #controls button {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #chat-input button:hover, #controls button:hover {
+            background-color: #677bc4;
+        }
+        #controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            background-color: rgba(32, 34, 37, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        #whiteboard-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        #whiteboard {
+            background-color: white;
+            border-radius: 8px;
+        }
+        #whiteboard-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        #color-picker {
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        #brush-size {
+            width: 100px;
+        }
+        #join-form {
+            text-align: center;
+            padding: 20px;
+            background-color: var(--sidebar-color);
+            border-radius: 8px;
+            max-width: 400px;
+            margin: 50px auto;
+        }
+        #join-form h1 {
+            color: var(--text-color);
+            margin-bottom: 20px;
+        }
+        #create-room-btn, #join-room-btn {
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        #create-room-btn:hover, #join-room-btn:hover {
+            background-color: #677bc4;
+        }
+        #room-info {
+            margin-top: 20px;
+            display: none;
+        }
+        #room-info h2 {
+            color: var(--text-color);
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        #room-id-display {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--button-color);
+            background-color: var(--input-bg);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        #invite-link {
+            display: inline-block;
+            color: var(--button-color);
+            background-color: var(--input-bg);
+            padding: 10px;
+            border-radius: 5px;
+            text-decoration: none;
+            word-break: break-all;
+            margin: 10px 0;
+        }
+        #join-room {
+            margin-top: 20px;
+        }
+        #room-id-input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: var(--input-bg);
+            color: var(--text-color);
+            font-size: 16px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        #interactive-section {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: var(--sidebar-color);
+            border-radius: 8px;
+        }
+        #interactive-section button {
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #poll-area input {
+            display: block;
+            margin: 5px 0;
+            padding: 5px;
+            width: 100%;
+        }
+        .poll-option {
+            display: block;
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="video-area">
+        
+    </div>
+    <div id="chat-area" style="display: none;">
+        <div id="chat-messages"></div>
+        <div id="chat-input">
+            <input type="text" placeholder="Type your message...">
+            <button>Send</button>
+        </div>
+    </div>
+    <div id="controls">
+        <button id="mute-btn">Mute</button>
+        <button id="video-btn">Video On/Off</button>
+        <button id="screen-share-btn">Share Screen</button>
+        <button id="whiteboard-btn">Whiteboard</button>
+        <button id="leave-btn">Leave Meeting</button>
+    </div>
+
+    <div id="whiteboard-container">
+        <div id="whiteboard-controls">
+            <input type="color" id="color-picker" value="#000000">
+            <input type="range" id="brush-size" min="1" max="20" value="5">
+            <button id="eraser-btn">Eraser</button>
+            <button id="clear-btn">Clear</button>
+            <button id="close-whiteboard-btn">Close</button>
+        </div>
+        <canvas id="whiteboard" width="1000" height="600"></canvas>
+    </div>
+
+    <div id="meeting-room" style="display: none;">
+        <div id="room-info">
+            <h2>Room ID: <span id="room-id-display"></span></h2>
+            <button id="invite-button">Invite Users</button>
+        </div>
+        <div id="video-area"></div>
+        <div id="chat-area">
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" placeholder="Type your message...">
+                <button>Send</button>
+            </div>
+        </div>
+        <div id="interactive-section">
+            <h3>Interactive Section</h3>
+            <button id="raise-hand-btn">Raise Hand</button>
+            <button id="poll-btn">Create Poll</button>
+            <div id="poll-area" style="display: none;">
+                <input type="text" id="poll-question" placeholder="Enter poll question">
+                <input type="text" id="poll-option1" placeholder="Option 1">
+                <input type="text" id="poll-option2" placeholder="Option 2">
+                <button id="submit-poll">Submit Poll</button>
+            </div>
+            <div id="poll-results"></div>
+        </div>
+    </div>
+
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.js"></script>
+    <script>
+        // Connect to signaling server (replace with your server URL)
+        const socket = io('http://localhost:3000');
+
+        // WebRTC configuration
+        const configuration = {'iceServers': [{'urls': 'stun:stun.l.google.com:19302'}]};
+        let localStream;
+        let peerConnections = {};
+
+        // DOM elements
+        const videoArea = document.getElementById('video-area');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.querySelector('#chat-input input');
+        const sendButton = document.querySelector('#chat-input button');
+        const muteBtn = document.getElementById('mute-btn');
+        const videoBtn = document.getElementById('video-btn');
+        const screenShareBtn = document.getElementById('screen-share-btn');
+        const leaveBtn = document.getElementById('leave-btn');
+
+        // Get user media
+        async function setupLocalStream() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+                addVideoStream('local', localStream);
+            } catch (error) {
+                console.error('Error accessing media devices:', error);
+            }
+        }
+
+        // Add video stream to the DOM
+        function addVideoStream(id, stream) {
+            const videoContainer = document.createElement('div');
+            videoContainer.className = 'video-container';
+            const video = document.createElement('video');
+            video.srcObject = stream;
+            video.autoplay = true;
+            video.playsInline = true;
+            if (id === 'local') video.muted = true;
+            videoContainer.appendChild(video);
+            videoArea.appendChild(videoContainer);
+        }
+
+        // Create peer connection
+        function createPeerConnection(id) {
+            const peerConnection = new RTCPeerConnection(configuration);
+            peerConnections[id] = peerConnection;
+
+            localStream.getTracks().forEach(track => {
+                peerConnection.addTrack(track, localStream);
+            });
+
+            peerConnection.ontrack = (event) => {
+                addVideoStream(id, event.streams[0]);
+            };
+
+            peerConnection.onicecandidate = (event) => {
+                if (event.candidate) {
+                    socket.emit('ice-candidate', {to: id, candidate: event.candidate});
+                }
+            };
+
+            return peerConnection;
+        }
+
+        // Socket.io event handlers
+        socket.on('user-connected', async (userId) => {
+            const peerConnection = createPeerConnection(userId);
+            const offer = await peerConnection.createOffer();
+            await peerConnection.setLocalDescription(offer);
+            socket.emit('offer', {to: userId, offer: offer});
+        });
+
+        socket.on('offer', async ({from, offer}) => {
+            const peerConnection = createPeerConnection(from);
+            await peerConnection.setRemoteDescription(offer);
+            const answer = await peerConnection.createAnswer();
+            await peerConnection.setLocalDescription(answer);
+            socket.emit('answer', {to: from, answer: answer});
+        });
+
+        socket.on('answer', async ({from, answer}) => {
+            await peerConnections[from].setRemoteDescription(answer);
+        });
+
+        socket.on('ice-candidate', async ({from, candidate}) => {
+            await peerConnections[from].addIceCandidate(candidate);
+        });
+
+        socket.on('user-disconnected', (userId) => {
+            if (peerConnections[userId]) {
+                peerConnections[userId].close();
+                delete peerConnections[userId];
+            }
+            const videoContainer = document.querySelector(`[data-user-id="${userId}"]`);
+            if (videoContainer) videoContainer.remove();
+        });
+
+        socket.on('chat-message', ({userId, message}) => {
+            const messageElement = document.createElement('div');
+            messageElement.textContent = `${userId}: ${message}`;
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        // Event listeners
+        sendButton.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                socket.emit('chat-message', message);
+                chatInput.value = '';
+            }
+        });
+
+        muteBtn.addEventListener('click', () => {
+            const audioTrack = localStream.getAudioTracks()[0];
+            audioTrack.enabled = !audioTrack.enabled;
+            muteBtn.textContent = audioTrack.enabled ? 'Mute' : 'Unmute';
+        });
+
+        videoBtn.addEventListener('click', () => {
+            const videoTrack = localStream.getVideoTracks()[0];
+            videoTrack.enabled = !videoTrack.enabled;
+            videoBtn.textContent = videoTrack.enabled ? 'Video Off' : 'Video On';
+        });
+
+        screenShareBtn.addEventListener('click', async () => {
+            try {
+                const screenStream = await navigator.mediaDevices.getDisplayMedia({video: true});
+                const videoTrack = screenStream.getVideoTracks()[0];
+                
+                Object.values(peerConnections).forEach(pc => {
+                    const sender = pc.getSenders().find(s => s.track.kind === 'video');
+                    sender.replaceTrack(videoTrack);
+                });
+
+                videoTrack.onended = () => {
+                    Object.values(peerConnections).forEach(pc => {
+                        const sender = pc.getSenders().find(s => s.track.kind === 'video');
+                        sender.replaceTrack(localStream.getVideoTracks()[0]);
+                    });
+                };
+            } catch (error) {
+                console.error('Error sharing screen:', error);
+            }
+        });
+
+        leaveBtn.addEventListener('click', () => {
+            socket.disconnect();
+            localStream.getTracks().forEach(track => track.stop());
+            window.location.href = '/'; // Redirect to home page or meeting lobby
+        });
+
+        // Whiteboard functionality
+        const whiteboardBtn = document.getElementById('whiteboard-btn');
+        const whiteboardContainer = document.getElementById('whiteboard-container');
+        const whiteboard = document.getElementById('whiteboard');
+        const ctx = whiteboard.getContext('2d');
+        const colorPicker = document.getElementById('color-picker');
+        const brushSize = document.getElementById('brush-size');
+        const eraserBtn = document.getElementById('eraser-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        const closeWhiteboardBtn = document.getElementById('close-whiteboard-btn');
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        function startDrawing(e) {
+            isDrawing = true;
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            drawLine(lastX, lastY, e.offsetX, e.offsetY, ctx.strokeStyle, ctx.lineWidth);
+            [lastX, lastY] = [e.offsetX, e.offsetY];
+
+            // Emit drawing data to other users
+            socket.emit('draw', {
+                x0: lastX,
+                y0: lastY,
+                x1: e.offsetX,
+                y1: e.offsetY,
+                color: ctx.strokeStyle,
+                width: ctx.lineWidth
+            });
+        }
+
+        function drawLine(x0, y0, x1, y1, color, width) {
+            ctx.beginPath();
+            ctx.moveTo(x0, y0);
+            ctx.lineTo(x1, y1);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        whiteboard.addEventListener('mousedown', startDrawing);
+        whiteboard.addEventListener('mousemove', draw);
+        whiteboard.addEventListener('mouseup', stopDrawing);
+        whiteboard.addEventListener('mouseout', stopDrawing);
+
+        // Touch events for mobile devices
+        whiteboard.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousedown', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            whiteboard.dispatchEvent(mouseEvent);
+        });
+
+        whiteboard.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            whiteboard.dispatchEvent(mouseEvent);
+        });
+
+        whiteboard.addEventListener('touchend', (e) => {
+            const mouseEvent = new MouseEvent('mouseup', {});
+            whiteboard.dispatchEvent(mouseEvent);
+        });
+
+        colorPicker.addEventListener('change', (e) => {
+            ctx.strokeStyle = e.target.value;
+        });
+
+        brushSize.addEventListener('input', (e) => {
+            ctx.lineWidth = e.target.value;
+        });
+
+        eraserBtn.addEventListener('click', () => {
+            ctx.strokeStyle = '#FFFFFF';
+        });
+
+        clearBtn.addEventListener('click', () => {
+            ctx.clearRect(0, 0, whiteboard.width, whiteboard.height);
+            socket.emit('clear-whiteboard');
+        });
+
+        whiteboardBtn.addEventListener('click', () => {
+            whiteboardContainer.style.display = 'flex';
+        });
+
+        closeWhiteboardBtn.addEventListener('click', () => {
+            whiteboardContainer.style.display = 'none';
+        });
+
+        // Socket events for whiteboard
+        socket.on('draw', (data) => {
+            drawLine(data.x0, data.y0, data.x1, data.y1, data.color, data.width);
+        });
+
+        socket.on('clear-whiteboard', () => {
+            ctx.clearRect(0, 0, whiteboard.width, whiteboard.height);
+        });
+
+        // Request initial whiteboard state when joining
+        socket.emit('request-whiteboard-state');
+
+        socket.on('whiteboard-state', (imageData) => {
+            const img = new Image();
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0);
+            };
+            img.src = imageData;
+        });
+
+        // Initialize
+        setupLocalStream();
+
+        function showRoomInfo(roomId) {
+            const roomInfo = document.getElementById('room-info');
+            const roomIdDisplay = document.getElementById('room-id-display');
+            const inviteLink = document.getElementById('invite-link');
+            
+            roomInfo.style.display = 'block';
+            roomIdDisplay.textContent = roomId;
+            inviteLink.textContent = `${window.location.origin}?room=${roomId}`;
+            inviteLink.href = `${window.location.origin}?room=${roomId}`;
+        }
+    </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="/client.js"></script>
+</body>
+</html>

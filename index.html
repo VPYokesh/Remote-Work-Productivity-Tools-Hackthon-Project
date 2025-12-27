@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remote Work Productivity Tools</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --secondary-color: #34495e;
+            --accent-color: #e74c3c;
+            --text-color: #333333;
+            --background-color: #f8f9fa;
+            --white: #FFFFFF;
+            --light-gray: #e9ecef;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+    
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+        }
+    
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 60px 0;
+            text-align: center;
+            color: var(--white);
+        }
+    
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+    
+        header p {
+            font-size: 1.2em;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+    
+        nav {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+    
+        nav a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            padding: 15px 20px;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+    
+        nav a:hover {
+            background-color: var(--light-gray);
+            color: var(--primary-color);
+        }
+    
+        section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    
+        h2 {
+            color: var(--secondary-color);
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+    
+        h2::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background-color: var(--primary-color);
+            margin: 20px auto 0;
+        }
+    
+        .features-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+    
+        .feature-box {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            flex-basis: calc(25% - 30px);
+            text-decoration: none;
+            color: var(--text-color);
+        }
+    
+        .feature-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+    
+        .feature-box i {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+    
+        .feature-box h3 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+    
+        .pricing-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+    
+        .pricing-card {
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 40px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            flex-basis: calc(33.333% - 30px);
+        }
+    
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+    
+        .price {
+            font-size: 3em;
+            color: var(--primary-color);
+            margin: 20px 0;
+            font-weight: bold;
+        }
+    
+        .cta-button {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: var(--accent-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+    
+        .cta-button:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+    
+        footer {
+            background-color: var(--secondary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 30px;
+            margin-top: 80px;
+        }
+    
+        @media (max-width: 768px) {
+            .feature-box, .pricing-card {
+                flex-basis: 100%;
+            }
+            
+            .pricing-container {
+                flex-direction: column;
+            }
+        }
+    
+        /* Additional styles for other sections */
+        .integration-container, .blog-container, .testimonial-container, .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+        }
+    
+        .integration-card, .blog-card, .testimonial-card, .contact-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            flex-basis: calc(33.333% - 30px);
+        }
+    
+        .integration-card:hover, .blog-card:hover, .testimonial-card:hover, .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+    
+        .faq-container {
+            margin-bottom: 20px;
+        }
+    
+        .faq-question {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    
+        .faq-answer {
+            background-color: var(--white);
+            padding: 15px;
+            border-radius: 0 0 5px 5px;
+            display: none;
+        }
+    
+        .faq-answer.active {
+            display: block;
+        }
+        /* ... (existing styles remain unchanged) ... */
+
+    /* Styles for the partnerships section */
+    .partners-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+    }
+
+    .partner {
+        background-color: var(--white);
+        border-radius: 10px;
+        padding: 1.5rem;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .partner:hover {
+        transform: translateY(-5px);
+    }
+
+    .partner img {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 1rem;
+    }
+
+    .partner h3 {
+        margin: 0;
+        color: var(--secondary-color);
+    }
+
+    @media (max-width: 768px) {
+        .partners-grid {
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        }
+    } 
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Remote Work Productivity Tools</h1>
+    <p>Your one-stop solution for boosting remote team efficiency</p>
+</header>
+
+<nav>
+    <a href="#" onclick="showPage('home')">Home</a>
+    <a href="#" onclick="showPage('product')">Product</a>
+    <a href="#" onclick="showPage('pricing')">Pricing</a>
+    <a href="#" onclick="showPage('integration')">Integration</a>
+    <a href="#" onclick="showPage('blog')">Blog</a>
+    <a href="#" onclick="showPage('faq')">FAQ</a>
+    <a href="#" onclick="showPage('usertest')">Testimonials</a>
+    <a href="#" onclick="showPage('contact')">Contact</a>
+    <a href="#" onclick="showPage('partnerships')">Partnerships</a>
+</nav>
+
+<section id="home" class="page active">
+    <h2>Boost Your Remote Team's Productivity</h2>
+    <div class="features-container">
+        <a href="index1.html" class="feature-box">
+            <i class="fas fa-tasks"></i>
+            <h3>Task Manager</h3>
+            <p>Organize and prioritize tasks easily.</p>
+        </a>
+        <a href="collab/Collaborative Workspace/index.html" class="feature-box">
+            <i class="fas fa-comments"></i>
+            <h3>Collaboration Platform</h3>
+            <p>Communicate and share ideas seamlessly.</p>
+        </a>
+        <a href="TimeTracker.html" class="feature-box">
+            <i class="fas fa-clock"></i>
+            <h3>Time Tracker</h3>
+            <p>Monitor time spent on tasks to improve productivity.</p>
+        </a>
+        <a href="SWITCHATHON/public/index.html" class="feature-box">
+            <i class="fas fa-video"></i>
+            <h3>Virtual Meeting Room</h3>
+            <p>Connect with your team face-to-face.</p>
+        </a>
+    </div>
+</section>
+
+<section id="product" class="page">
+    <h2>Our Product Features</h2>
+    <div class="feature-item">
+        <h3>Task Manager</h3>
+        <p>Our Task Manager tool helps you organize, prioritize, and assign tasks easily within your team. Key features include:</p>
+        <ul>
+            <li>Task assignment and tracking</li>
+            <li>Priority labeling</li>
+            <li>Task deadline reminders</li>
+            <li>Progress tracking dashboard</li>
+        </ul>
+    </div>
+    <div class="feature-item">
+        <h3>Collaboration Platform</h3>
+        <p>Communicate and share ideas with your team, no matter where they are. Features include:</p>
+        <ul>
+            <li>Real-time messaging</li>
+            <li>File sharing</li>
+            <li>Team channels for focused discussions</li>
+            <li>Video conferencing integration</li>
+        </ul>
+    </div>
+    <div class="feature-item">
+        <h3>Time Tracker</h3>
+        <p>Track time spent on various tasks to improve your productivity. Features include:</p>
+        <ul>
+            <li>Automated time logging</li>
+            <li>Daily and weekly time reports</li>
+            <li>Task-specific time tracking</li>
+            <li>Integration with project management tools</li>
+        </ul>
+    </div>
+    <div class="feature-item">
+        <h3>Virtual Meeting Room</h3>
+        <p>Host virtual meetings with your team from anywhere. Features include:</p>
+        <ul>
+            <li>HD video conferencing</li>
+            <li>Screen sharing</li>
+            <li>Meeting recording and playback</li>
+            <li>Customizable meeting rooms</li>
+        </ul>
+    </div>
+</section>
+
+<section id="pricing" class="page">
+    <h2>Pricing Plans</h2>
+    <div class="pricing-container">
+        <div class="pricing-card">
+            <h3>Basic</h3>
+            <div class="price">Rs.9<span>/month</span></div>
+            <ul class="features">
+                <li>Up to 10 Users</li>
+                <li>Task Manager</li>
+                <li>Basic Collaboration Tools</li>
+                <li>Email Support</li>
+            </ul>
+            <a href="payment/paymentPage.html" class="cta-button">Get Started</a>
+        </div>
+        <div class="pricing-card">
+            <h3>Pro</h3>
+            <div class="price">RS.29<span>/month</span></div>
+            <ul class="features">
+                <li>Up to 50 Users</li>
+                <li>All Basic Features</li>
+                <li>Advanced Collaboration Tools</li>
+                <li>Time Tracker</li>
+                <li>Priority Support</li>
+            </ul>
+            <a href="payment/paymentPage.html" class="cta-button">Upgrade to Pro</a>
+        </div>
+        <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <div class="price">Contact Us</div>
+            <ul class="features">
+                <li>Unlimited Users</li>
+                <li>All Pro Features</li>
+                <li>Custom Integrations</li>
+                <li>Dedicated Account Manager</li>
+                <li>24/7 Support</li>
+            </ul>
+            <a href="contactus.html" class="cta-button">Contact Sales</a>
+        </div>
+    </div>
+</section>
+
+<section id="integration" class="page">
+    <h2>Seamless Integrations with Popular Platforms</h2>
+    <div class="integration-container">
+        <div class="integration-card">
+            <img src="slack-logo.png" alt="Slack Integration">
+            <h3>Slack</h3>
+            <p>Integrate with Slack to streamline team communication and stay updated on tasks in real-time.</p>
+        </div>
+        <div class="integration-card">
+            <img src="zoom-logo.png" alt="Zoom Integration">
+            <h3>Zoom</h3>
+            <p>Connect with Zoom to schedule meetings, manage events, and track attendee engagement directly from our tools.</p>
+        </div>
+        <div class="integration-card">
+            <img src="google-drive-logo.png" alt="Google Drive Integration">
+            <h3>Google Drive</h3>
+            <p>Easily integrate with Google Drive to access and share your documents while collaborating with your remote team.</p>
+        </div>
+    </div>
+</section>
+
+<section id="blog" class="page">
+    <h2>Latest Articles</h2>
+    <div class="blog-container">
+        <div class="blog-card">
+            <img src="#" alt="Blog 1">
+            <h3>10 Tips for Staying Productive While Working Remotely</h3>
+            <p>Discover the best practices for staying focused and productive in a remote work environment...</p>
+            <a href="#" class="read-more">Read More</a>
+        </div>
+        <div class="blog-card">
+            <img src="#" alt="Blog 2">
+            <h3>Top 5 Remote Collaboration Tools for Teams</h3>
+            <p>Explore the most effective tools for communication and collaboration with your remote team...</p>
+            <a href="#" class="read-more">Read More</a>
+        </div>
+        <div class="blog-card">
+            <img src="#" alt="Blog 3">
+            <h3>How to Create a Work-Life Balance When Working from Home</h3>
+            <p>Maintaining a healthy work-life balance is crucial. Learn how to manage your time efficiently...</p>
+            <a href="#" class="read-more">Read More</a>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="page">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-container">
+        <div class="faq-question">
+            How do I integrate the tool with Slack?
+        </div>
+        <div class="faq-answer">
+            To integrate with Slack, go to the Integrations page and click on "Slack." Follow the prompts to authorize the connection.
+        </div>
+    </div>
+    <div class="faq-container">
+        <div class="faq-question">
+            How can I reset my password?
+        </div>
+        <div class="faq-answer">
+            To reset your password, click on "Forgot Password" on the login page. You'll receive an email with a reset link. Follow the instructions to set a new password.
+        </div>
+    </div>
+    <div class="faq-container">
+        <div class="faq-question">
+            What platforms are supported?
+        </div>
+        <div class="faq-answer">
+            Our tools support integrations with Slack, Zoom, Google Drive, Microsoft Teams, Asana, and Trello. More platforms are being added regularly.
+        </div>
+    </div>
+</section>
+
+<section id="usertest" class="page">
+    <h2>User Testimonials</h2>
+    <div class="testimonial-container">
+        <div class="testimonial-card">
+            <img src="images1.jpeg" alt="User 1">
+            <h3>John Doe</h3>
+            <p>"These tools have completely transformed the way our remote team collaborates. The task manager and time tracker are lifesavers!"</p>
+        </div>
+        <div class="testimonial-card">
+            <img src="images22.jpeg" alt="User 2">
+            <h3>Jane Smith</h3>
+            <p>"The best productivity suite for remote teams! It's helped us stay organized and communicate effectively no matter where we are."</p>
+        </div>
+        <div class="testimonial-card">
+            <img src="image3.jpeg" alt="User 3">
+            <h3>Robert Brown</h3>
+            <p>"The virtual meeting room feature is fantastic. We now run our meetings seamlessly with no technical hiccups. Highly recommended!"</p>
+        </div>
+    </div>
+</section>
+
+<section id="contact" class="page">
+    <h2>How to Reach Us</h2>
+    <div class="contact-container">
+        <div class="contact-card">
+            <h3>Customer Support</h3>
+            <p>For any product-related issues, please contact our support team. We're available 24/7 to assist you.</p>
+            <p>Email: <a href="mailto:support@productivitytools.com">support@productivitytools.com</a></p>
+            <p>Phone: +1-800-555-1234</p>
+        </div>
+        <div class="contact-card">
+            <h3>General Inquiries</h3>
+            <p>Have a question or feedback? We'd love to hear from you. Get in touch with us via email or phone.</p>
+            <p>Email: <a href="mailto:info@productivitytools.com">info@productivitytools.com</a></p>
+            <p>Phone: +1-800-555-5678</p>
+        </div>
+        <div class="contact-card">
+            <h3>Partnerships</h3>
+            <p>Interested in partnering with us? Reach out to our business development team for more information.</p>
+            <p>Email: <a href="mailto:partnerships@productivitytools.com">partnerships@productivitytools.com</a></p>
+            <p>Phone: +1-800-555-7890</p>
+        </div>
+    </div>
+</section>
+<!-- ... (previous code remains unchanged) ... -->
+
+<section id="partnerships" class="page">
+    <h2>Our Partnerships</h2>
+    <div class="intro">
+        <p>We're proud to work with industry leaders to deliver the best solutions for our customers.</p>
+    </div>
+    <div class="partners-grid">
+        <div class="partner">
+            <img src="https://logo.clearbit.com/google.com" alt="Google">
+            <h3>Google</h3>
+        </div>
+        <div class="partner">
+            <img src="https://logo.clearbit.com/microsoft.com" alt="Microsoft">
+            <h3>Microsoft</h3>
+        </div>
+        <div class="partner">
+            <img src="https://logo.clearbit.com/apple.com" alt="Apple">
+            <h3>Apple</h3>
+        </div>
+        <div class="partner">
+            <img src="https://logo.clearbit.com/amazon.com" alt="Amazon">
+            <h3>Amazon</h3>
+        </div>
+        <div class="partner">
+            <img src="https://logo.clearbit.com/facebook.com" alt="Facebook">
+            <h3>Facebook</h3>
+        </div>
+        <div class="partner">
+            <img src="https://logo.clearbit.com/ibm.com" alt="IBM">
+            <h3>IBM</h3>
+        </div>
+    </div>
+</section>
+<iframe allow="microphone" id="chatbot-frame" src="chatbot.html" width="500" height="600" frameborder="0" style="position: fixed; bottom: 0px; right: 0px;"></iframe>
+
+<!-- ... (remaining code stays the same) ... -->
+
+<footer>
+    <p>&copy; 2024 Remote Work Productivity Tools. All rights reserved.</p>
+</footer>
+
+<script>
+    function showPage(pageId) {
+        // Scroll to the selected section
+        const targetSection = document.getElementById(pageId);
+        if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Add FAQ toggle functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.classList.toggle('active');
+            });
+        });
+
+        // Add smooth scrolling to all nav links
+        const navLinks = document.querySelectorAll('nav a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('onclick').match(/'([^']+)'/)[1];
+                showPage(targetId);
+            });
+        });
+    });
+
+    // Handle feature box links
+    document.querySelectorAll('.feature-box').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = this.getAttribute('href');
+        });
+    });
+</script>
+
+</body>
+</html>

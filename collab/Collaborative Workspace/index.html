@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next-Gen Collaborative Workspace</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="toolbar">
+            <div class="logo">
+                <i class="fas fa-brain"></i>
+            </div>
+            <div class="tool-group">
+                <button id="selectBtn" class="tool-btn" data-tooltip="Select"><i class="fas fa-mouse-pointer"></i></button>
+                <button id="rectangleBtn" class="tool-btn" data-tooltip="Rectangle"><i class="fas fa-square"></i></button>
+                <button id="circleBtn" class="tool-btn" data-tooltip="Circle"><i class="fas fa-circle"></i></button>
+                <button id="textBtn" class="tool-btn" data-tooltip="Text"><i class="fas fa-font"></i></button>
+            </div>
+            <div class="tool-group">
+                <input type="color" id="colorPicker" value="#6C5CE7" data-tooltip="Color">
+                <button id="undoBtn" class="tool-btn" data-tooltip="Undo"><i class="fas fa-undo"></i></button>
+                <button id="redoBtn" class="tool-btn" data-tooltip="Redo"><i class="fas fa-redo"></i></button>
+            </div>
+        </div>
+        <div class="main-area">
+            <canvas id="canvas"></canvas>
+            <div class="zoom-controls">
+                <button id="zoomOutBtn"><i class="fas fa-minus"></i></button>
+                <span id="zoomLevel">100%</span>
+                <button id="zoomInBtn"><i class="fas fa-plus"></i></button>
+            </div>
+        </div>
+        <div class="chat-panel">
+            <h3>Team Chat <i class="fas fa-comments"></i></h3>
+            <div id="messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type a message...">
+                <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

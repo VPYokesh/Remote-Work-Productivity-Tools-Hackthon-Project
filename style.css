@@ -1,0 +1,37 @@
+/* Custom Styles */
+
+/* Kanban Column Styling */
+.kanban-column {
+    min-height: 400px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Header Styling */
+.card-header {
+    border-bottom: none;
+    text-align: center;
+}
+
+/* Task List Styling */
+.task-list {
+    min-height: 300px;
+}
+
+.task-list .list-group-item {
+    background-color: #ffffff;
+    cursor: default; /* Show cursor as default */
+    transition: background-color 0.3s ease;
+}
+
+.task-list .list-group-item:hover {
+    background-color: #e9ecef; /* Change background on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .kanban-column {
+        margin-bottom: 20px;
+    }
+}

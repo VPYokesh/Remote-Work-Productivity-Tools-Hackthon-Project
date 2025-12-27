@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Time Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --background-color: #f5f7fa;
+            --text-color: #333333;
+            --white: #ffffff;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .timer-container {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        #timer-display {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        .task-list {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+        }
+
+        #task-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .task-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .task-complete {
+            text-decoration: line-through;
+            color: #7f8c8d;
+        }
+
+        #add-task-form {
+            display: flex;
+            margin-top: 1rem;
+        }
+
+        #new-task-input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+        }
+
+        #add-task-btn {
+            border-radius: 0 4px 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .timer-controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Interactive Time Tracker</h1>
+    </header>
+    <main>
+        <div class="timer-container">
+            <h2>Timer</h2>
+            <div id="timer-display">00:00:00</div>
+            <div class="timer-controls">
+                <button id="start-btn"><i class="fas fa-play"></i> Start</button>
+                <button id="stop-btn" disabled><i class="fas fa-pause"></i> Pause</button>
+                <button id="reset-btn" disabled><i class="fas fa-undo"></i> Reset</button>
+            </div>
+        </div>
+        <div class="task-list">
+            <h2>Tasks</h2>
+            <ul id="task-list"></ul>
+            <form id="add-task-form">
+                <input type="text" id="new-task-input" placeholder="Enter new task" required>
+                <button type="submit" id="add-task-btn">Add Task</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const taskList = document.getElementById('task-list');
+            const addTaskForm = document.getElementById('add-task-form');
+            const newTaskInput = document.getElementById('new-task-input');
+            const timerDisplay = document.getElementById('timer-display');
+            const startBtn = document.getElementById('start-btn');
+            const stopBtn = document.getElementById('stop-btn');
+            const resetBtn = document.getElementById('reset-btn');
+
+            let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            let timer;
+            let activeTaskIndex = -1;
+
+            function renderTasks() {
+                taskList.innerHTML = '';
+                tasks.forEach((task, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
+                    li.innerHTML = `
+                        <span class="${task.completed ? 'task-complete' : ''}">${task.name}</span>
+                        <div class="task-actions">
+                            <span>${formatTime(task.time)}</span>
+                            <button class="toggle-timer" data-index="${index}">
+                                <i class="fas ${index === activeTaskIndex && timer ? 'fa-pause' : 'fa-play'}"></i>
+                            </button>
+                            <button class="toggle-complete" data-index="${index}">
+                                <i class="fas ${task.completed ? 'fa-undo' : 'fa-check'}"></i>
+                            </button>
+                            <button class="delete-task" data-index="${index}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    `;
+                    taskList.appendChild(li);
+                });
+                saveTasks();
+                updateTimerControls();
+            }
+
+            function addTask(taskName) {
+                tasks.push({ name: taskName, time: 0, completed: false });
+                renderTasks();
+            }
+
+            function deleteTask(index) {
+                if (index === activeTaskIndex) {
+                    stopTimer();
+                    activeTaskIndex = -1;
+                }
+                tasks.splice(index, 1);
+                renderTasks();
+            }
+
+            function toggleTaskCompletion(index) {
+                tasks[index].completed = !tasks[index].completed;
+                if (tasks[index].completed && index === activeTaskIndex) {
+                    stopTimer();
+                    activeTaskIndex = -1;
+                }
+                renderTasks();
+            }
+
+            function formatTime(totalSeconds) {
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+                return [hours, minutes, seconds]
+                    .map(v => v < 10 ? "0" + v : v)
+                    .filter((v,i) => v !== "00" || i > 0)
+                    .join(":");
+            }
+
+            function startTimer() {
+                if (activeTaskIndex === -1) return;
+                timer = setInterval(() => {
+                    tasks[activeTaskIndex].time++;
+                    updateTimerDisplay();
+                    renderTasks();
+                }, 1000);
+                updateTimerControls();
+            }
+
+            function stopTimer() {
+                clearInterval(timer);
+                timer = null;
+                updateTimerControls();
+            }
+
+            function resetTimer() {
+                stopTimer();
+                if (activeTaskIndex !== -1) {
+                    tasks[activeTaskIndex].time = 0;
+                }
+                activeTaskIndex = -1;
+                updateTimerDisplay();
+                renderTasks();
+            }
+
+            function updateTimerDisplay() {
+                timerDisplay.textContent = activeTaskIndex !== -1 ? formatTime(tasks[activeTaskIndex].time) : "00:00:00";
+            }
+
+            function updateTimerControls() {
+                const isRunning = timer !== null;
+                startBtn.disabled = isRunning || activeTaskIndex === -1;
+                stopBtn.disabled = !isRunning || activeTaskIndex === -1;
+                resetBtn.disabled = activeTaskIndex === -1 && !isRunning;
+            }
+
+            function saveTasks() {
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+            }
+
+            addTaskForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const newTask = newTaskInput.value.trim();
+                if (newTask) {
+                    addTask(newTask);
+                    newTaskInput.value = '';
+                }
+            });
+
+            taskList.addEventListener('click', (e) => {
+                const button = e.target.closest('button');
+                if (!button) return;
+
+                const index = parseInt(button.dataset.index);
+                if (isNaN(index)) return;
+
+                if (button.classList.contains('delete-task')) {
+                    deleteTask(index);
+                } else if (button.classList.contains('toggle-complete')) {
+                    toggleTaskCompletion(index);
+                } else if (button.classList.contains('toggle-timer')) {
+                    if (index === activeTaskIndex && timer) {
+                        stopTimer();
+                    } else {
+                        stopTimer();
+                        activeTaskIndex = index;
+                        startTimer();
+                    }
+                }
+            });
+
+            startBtn.addEventListener('click', startTimer);
+            stopBtn.addEventListener('click', stopTimer);
+            resetBtn.addEventListener('click', resetTimer);
+
+            renderTasks();
+            updateTimerDisplay();
+        });
+    </script>
+</body>
+</html>

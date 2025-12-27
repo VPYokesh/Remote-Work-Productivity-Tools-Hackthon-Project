@@ -1,0 +1,73 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #f0f8ff; /* Light blue background */
+}
+
+header {
+    background-color: #1e90ff; /* Dodger blue */
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.task-list, .timer {
+    flex-basis: 40%;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #4169e1; /* Royal blue */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(65, 105, 225, 0.2);
+    background-color: white;
+}
+
+#task-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#task-list li {
+    padding: 10px;
+    border-bottom: 1px solid #87cefa; /* Light sky blue */
+}
+
+#task-list li:last-child {
+    border-bottom: none;
+}
+
+button {
+    background-color: #4169e1; /* Royal blue */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1e90ff; /* Dodger blue */
+}
+
+button:disabled {
+    background-color: #b0c4de; /* Light steel blue */
+    cursor: not-allowed;
+}
+
+#timer-display {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #4169e1; /* Royal blue */
+}
+
+h2 {
+    color: #4169e1; /* Royal blue */
+}
