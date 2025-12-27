@@ -1,71 +1,69 @@
 # Remote Work Productivity Tools
 
-## 🏆 Hackathon Achievement
-🥇 **First Prize Winner – PG Hackathon**
+🏆 **First Prize Winner – PG Hackathon**
 
-This project won **First Prize** in a PG-level hackathon for presenting an effective and user-friendly solution to improve **remote team productivity**.
+🌐 **Live Demo:**  
+https://vpyokesh.github.io/Remote-Work-Productivity-Tools-Hackthon-Project/
 
 ---
 
 ## 📌 Project Overview
-Remote work has become a standard working model, but managing tasks, collaboration, time tracking, and meetings efficiently remains a challenge.
+Remote work has become the new normal, but managing productivity across distributed teams remains a challenge. Teams often rely on multiple disconnected tools for task management, collaboration, time tracking, and meetings.
 
-**Remote Work Productivity Tools** is a web-based solution designed to help remote teams improve efficiency by providing essential productivity features in a single platform.
-
-The application focuses on simplicity, accessibility, and usability to enhance team performance in remote environments.
+**Remote Work Productivity Tools** is a web-based platform designed as a **one-stop solution** to improve remote team efficiency by bringing essential productivity features into a single, easy-to-use interface.
 
 ---
 
 ## 🚀 Features
-- **Task Manager** – Organize and prioritize tasks easily  
-- **Collaboration Platform** – Seamless communication and idea sharing  
-- **Time Tracker** – Monitor time spent on tasks to boost productivity  
-- **Virtual Meeting Room** – Connect with team members remotely  
-- **Clean & Responsive UI** – Works across devices  
+- **Task Manager** – Organize and prioritize tasks effectively  
+- **Collaboration Platform** – Communicate and share ideas seamlessly  
+- **Time Tracker** – Monitor time spent on tasks to improve productivity  
+- **Virtual Meeting Room** – Enable remote face-to-face collaboration  
+- **Responsive Design** – Works smoothly across devices  
 
 ---
 
 ## 🧠 Problem Statement
-Remote teams often rely on multiple disconnected tools for task management, communication, and meetings, leading to inefficiency and context switching.
+Remote teams often struggle with productivity due to fragmented tools and lack of centralized workflow management. Constant context switching reduces efficiency and team focus.
 
-This project aims to provide a **centralized productivity solution** that simplifies remote work management.
+This project addresses the problem by offering a **centralized productivity dashboard** tailored for remote work environments.
 
 ---
 
 ## 💡 Solution Approach
-- Designed a **single-platform productivity dashboard**
-- Focused on **user-friendly UI/UX**
-- Modular components for easy feature expansion
-- Lightweight and fast web application
+- Designed a **single unified platform** for remote productivity
+- Focused on **clean UI/UX** for better usability
+- Modular feature-based design for future scalability
+- Lightweight and fast frontend implementation
 
 ---
 
 ## 🛠️ Technologies Used
-- HTML5
-- CSS3
-- JavaScript
-- Responsive Web Design
+- HTML5  
+- CSS3  
+- JavaScript  
+- Responsive Web Design  
 
 ---
 
 ## 📸 Application Screenshot
 
 ### 🏠 Home Page
-<img width="1918" height="1030" alt="image" src="https://github.com/user-attachments/assets/3f4abb65-bcbe-4f0a-8c1e-925b958af2b7" />
+<img width="1918" height="1030" alt="image" src="https://github.com/user-attachments/assets/6fd069e3-f8b8-4a54-936c-acf6ebe39d33" />
 
-The home page showcases the core productivity features and provides easy navigation across the platform.
+The home page highlights the core productivity tools and provides intuitive navigation across the platform.
 
 ---
 
 ## 🏁 Hackathon Highlights
-- Built within limited time constraints
-- Focused on real-world remote work challenges
-- Strong emphasis on usability and clarity
-- Appreciated for clean design and practical idea
+- 🥇 Won **First Prize** in a PG-level hackathon  
+- Built within strict time constraints  
+- Appreciated for practical problem-solving and UI clarity  
+- Focused on real-world remote work challenges  
 
 ---
 
-## 🚀 How to Run the Project
+## 🚀 How to Run Locally
 1. Clone the repository:
 ```bash
-git clone https://github.com/your-username/remote-work-productivity-tools.git
+git clone https://github.com/VPYokesh/Remote-Work-Productivity-Tools-Hackthon-Project.git
